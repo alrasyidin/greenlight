@@ -5,21 +5,20 @@ import (
 	"database/sql"
 	"expvar"
 	"flag"
-	"fmt"
 	"os"
 	"runtime"
 	"strings"
 	"sync"
 	"time"
+	// Import the pq driver so that it can register itself with the database/sql
+
+	// package. Note that we alias this import to the blank identifier, to stop the Go
+	// compiler complaining that the package isn't being used.
+	_ "github.com/lib/pq"
 
 	"github.com/DataDavD/snippetbox/greenlight/internal/data"
 	"github.com/DataDavD/snippetbox/greenlight/internal/jsonlog"
 	"github.com/DataDavD/snippetbox/greenlight/internal/mailer"
-
-	// Import the pq driver so that it can register itself with the database/sql
-	// package. Note that we alias this import to the blank identifier, to stop the Go
-	// compiler complaining that the package isn't being used.
-	_ "github.com/lib/pq"
 )
 
 // Declare a string containing the application version number
@@ -78,11 +77,8 @@ func main() {
 
 	// Read the DSN Value from the db-dsn command-line flag into the config struct.
 	// We default to using our development DSN if no flag is provided.
-	pw := os.Getenv("DB_PW")
-	flag.StringVar(&cfg.db.dsn, "db-dsn",
-		fmt.Sprintf("postgres://greenlight:%s@localhost/greenlight?sslmode=disable",
-			pw), "PostgreSQL DSN")
-
+	// pw := os.Getenv("DB_PW")
+	flag.StringVar(&cfg.db.dsn, "db-dsn", "postgres://greenlight:greenlight@127.0.0.1:5432/greenlight?sslmode=disable", "PostgreSQL DSN")
 	// Read the connection pool settings from command-line flags into the config struct.
 	// Notice the default values that we're using?
 	flag.IntVar(&cfg.db.maxOpenConns, "db-max-open-conns", 25,

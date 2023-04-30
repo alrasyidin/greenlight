@@ -23,7 +23,7 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodGet, "/v1/healthcheck", app.healthcheckHandler)
 
 	// application metrics handler
-	router.Handler(http.MethodGet, "/debug/vars", expvar.Handler())
+	router.Handler(http.MethodGet, "/v1/metrics", expvar.Handler())
 
 	// Movies handlers. Note, that these movie endpoints use the `requireActivatedUser` middleware.
 	router.HandlerFunc(http.MethodGet, "/v1/movies", app.requirePermissions("movies:read", app.listMoviesHandler))

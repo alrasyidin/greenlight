@@ -11,10 +11,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/DataDavD/snippetbox/greenlight/internal/data"
-	"github.com/DataDavD/snippetbox/greenlight/internal/validator"
 	"github.com/felixge/httpsnoop"
 	"golang.org/x/time/rate"
+
+	"github.com/DataDavD/snippetbox/greenlight/internal/data"
+	"github.com/DataDavD/snippetbox/greenlight/internal/validator"
 )
 
 // recoverPanic is middleware that recovers from a panic by responding with a 500 Internal Server
@@ -302,7 +303,7 @@ func (app *application) metrics(next http.Handler) http.Handler {
 	totalRequestsReceived := expvar.NewInt("total_requests_received")
 	totalResponsesSent := expvar.NewInt("total_responses_sent")
 	totalProcessingTimeMicroseconds := expvar.NewInt("total_processing_time_µs")
-	totalResponsesSentbyStatus := expvar.NewMap("total_responses_sent_by_status")
+	totalReponsesSentByStatus := expvar.NewMap("total_responses_sent_by_status")
 
 	// Below runs for every request.
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -324,6 +325,6 @@ func (app *application) metrics(next http.Handler) http.Handler {
 		// / Use the Add method to increment the count for the given status code by 1.
 		// Note, the expvar map is string-keyed, so we need to use the strconv.Itoa
 		// function to convert the status (an integer) to a string.
-		totalResponsesSentbyStatus.Add(strconv.Itoa(metrics.Code), 1)
+		totalReponsesSentByStatus.Add(strconv.Itoa(metrics.Code), 1)
 	})
 }
