@@ -10,10 +10,12 @@ import (
 	"strings"
 	"sync"
 	"time"
+
 	// Import the pq driver so that it can register itself with the database/sql
 
 	// package. Note that we alias this import to the blank identifier, to stop the Go
 	// compiler complaining that the package isn't being used.
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 
 	"github.com/DataDavD/snippetbox/greenlight/internal/data"
@@ -66,6 +68,17 @@ type application struct {
 }
 
 func main() {
+	// Initialize a new jsonlog.Logger which writes any messages *at or above* the INFO
+	// severity level to the standard out stream.
+	logger := jsonlog.NewLogger(os.Stdout, jsonlog.LevelInfo)
+
+	// Load env variable
+	err := godotenv.Load()
+
+	if err != nil {
+		logger.PrintFatal(err, nil)
+	}
+
 	// Declare an instance of the config struct.
 	var cfg config
 
@@ -78,7 +91,7 @@ func main() {
 	// Read the DSN Value from the db-dsn command-line flag into the config struct.
 	// We default to using our development DSN if no flag is provided.
 	// pw := os.Getenv("DB_PW")
-	flag.StringVar(&cfg.db.dsn, "db-dsn", "postgres://greenlight:greenlight@127.0.0.1:5432/greenlight?sslmode=disable", "PostgreSQL DSN")
+	flag.StringVar(&cfg.db.dsn, "db-dsn", os.Getenv("GREENLIGHT_DB_DSN"), "PostgreSQL DSN")
 	// Read the connection pool settings from command-line flags into the config struct.
 	// Notice the default values that we're using?
 	flag.IntVar(&cfg.db.maxOpenConns, "db-max-open-conns", 25,
@@ -115,10 +128,6 @@ func main() {
 	})
 
 	flag.Parse()
-
-	// Initialize a new jsonlog.Logger which writes any messages *at or above* the INFO
-	// severity level to the standard out stream.
-	logger := jsonlog.NewLogger(os.Stdout, jsonlog.LevelInfo)
 
 	// Call the openDB() helper function (see below) to create teh connection pool,
 	// passing in the config struct. If this returns an error,
