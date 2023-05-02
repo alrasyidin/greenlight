@@ -38,14 +38,14 @@ func getenvInt(key string) int {
 	return v
 }
 
-func getenvBool(key string) bool {
-	s, err := getenv(key)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	v, err := strconv.ParseBool(s)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	return v
-}
+// func getenvBool(key string) bool {
+// 	s, err := getenv(key)
+// 	if err != nil {
+// 		log.Fatal(err.Error())
+// 	}
+// 	v, err := strconv.ParseBool(s)
+// 	if err != nil {
+// 		log.Fatal(err.Error())
+// 	}
+// 	return v
+// }

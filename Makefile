@@ -1,5 +1,9 @@
 include .env
 
+# ==================================================================================== # 
+# HELPERS
+# ==================================================================================== #
+
 ## help: print this help messages
 .PHONY: help
 help:
@@ -9,6 +13,11 @@ help:
 .PHONY: confirm
 confirm:
 	@echo 'Are you sure? [y/N] ' && read ans && [ $${ans:-N} = y ]
+
+
+# ==================================================================================== # 
+# DEVELOPMENT
+# ==================================================================================== #
 
 ## run/api: run the cmd/api application
 .PHONY: run/api
@@ -31,3 +40,27 @@ db/migration/new:
 db/migration/up: confirm
 	@echo 'running migrations...'
 	migrate -path=./migrations -database=${GREENLIGHT_DB_DSN} up
+
+# ==================================================================================== # 
+# QUALITY CONTROL
+# ==================================================================================== #
+
+## tidy: tidy dependencies and format, vet and test all code
+.PHONY: audit
+audit: vendor
+	@echo 'Formatting code...'
+	go fmt ./...
+	@echo 'Vetting code...'
+	go vet ./...
+	staticcheck ./...
+	@echo 'Running tests...'
+	go test -race -vet=off ./...
+
+## vendor: tidy and vendor dependencies
+.PHONY: vendor
+vendor:
+	@echo 'Tidying and verifying module dependencies...'
+	go mod tidy
+	go mod verify
+	@echo 'Vendoring dependencies...'
+	go mod vendor

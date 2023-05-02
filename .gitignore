@@ -25,3 +25,5 @@ env.bak/
 tls/
 
 bin
+
+vendor
