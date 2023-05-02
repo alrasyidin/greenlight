@@ -71,7 +71,8 @@ vendor:
 
 ## build/api: build the cmd/api application 
 current_time = $(shell date -Iseconds)
-linker_flags = '-w -X main.buildTime=${current_time}'
+git_description = $(shell git describe --always --dirty --tags --long)
+linker_flags = '-w -X main.buildTime=${current_time} -X main.version=${git_description}'
 
 .PHONY: build/api
 build/api:

@@ -9,6 +9,7 @@ import (
 	"runtime"
 	"sync"
 	"time"
+
 	// Import the pq driver so that it can register itself with the database/sql
 
 	// package. Note that we alias this import to the blank identifier, to stop the Go
@@ -22,9 +23,11 @@ import (
 )
 
 // Declare a string containing the application version number
-const version = "1.0.0"
 
-var buildTime string
+var (
+	version   string
+	buildTime string
+)
 
 // Define an application struct to hold dependencies for our HTTP handlers, helpers, and
 // middleware.
