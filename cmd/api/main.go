@@ -24,6 +24,8 @@ import (
 // Declare a string containing the application version number
 const version = "1.0.0"
 
+var buildTime string
+
 // Define an application struct to hold dependencies for our HTTP handlers, helpers, and
 // middleware.
 type application struct {
@@ -54,6 +56,7 @@ func main() {
 	// if display version true exit from app
 	if cfg.displayVersion {
 		fmt.Printf("Version:\t%s\n", version)
+		fmt.Printf("Build Time: \t%s\n", buildTime)
 		os.Exit(0)
 	}
 

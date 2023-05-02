@@ -70,8 +70,11 @@ vendor:
 # ==================================================================================== #
 
 ## build/api: build the cmd/api application 
+current_time = $(shell date -Iseconds)
+linker_flags = '-w -X main.buildTime=${current_time}'
+
 .PHONY: build/api
 build/api:
 	@echo 'Building cmd/api...'
-	go build -ldflags="-w" -o=./bin/api ./cmd/api
-	GOOS=linux GOARCH=amd64 go build -ldflags="-w" -o=./bin/linux_amd64/api ./cmd/api
+	go build -ldflags=${linker_flags} -o=./bin/api ./cmd/api
+	GOOS=linux GOARCH=amd64 go build -ldflags=${linker_flags} -o=./bin/linux_amd64/api ./cmd/api
