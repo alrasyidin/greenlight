@@ -8,8 +8,9 @@ import (
 
 // Define a config struct.
 type config struct {
-	port int
-	env  string
+	port           int
+	env            string
+	displayVersion bool
 	// db struct field holds the configuration settings for our database connection pool.
 	// For now this only holds the DSN, which we read in from a command-line flag.
 	db struct {
@@ -82,6 +83,8 @@ func (cfg *config) load() {
 		cfg.cors.trustedOrigins = strings.Fields(val)
 		return nil
 	})
+
+	flag.BoolVar(&cfg.displayVersion, "version", false, "Display version and exit")
 
 	flag.Parse()
 }

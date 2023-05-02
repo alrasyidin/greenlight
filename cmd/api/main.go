@@ -4,11 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"expvar"
+	"fmt"
 	"os"
 	"runtime"
 	"sync"
 	"time"
-
 	// Import the pq driver so that it can register itself with the database/sql
 
 	// package. Note that we alias this import to the blank identifier, to stop the Go
@@ -50,6 +50,12 @@ func main() {
 	var cfg config
 	// load all config
 	cfg.load()
+
+	// if display version true exit from app
+	if cfg.displayVersion {
+		fmt.Printf("Version:\t%s\n", version)
+		os.Exit(0)
+	}
 
 	// Call the openDB() helper function (see below) to create teh connection pool,
 	// passing in the config struct. If this returns an error,
