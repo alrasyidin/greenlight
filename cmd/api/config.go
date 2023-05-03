@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"os"
 	"strings"
 )
 
@@ -66,8 +65,8 @@ func (cfg *config) load() {
 
 	// Read the SMTP server configuration settings into the config struct, using the
 	// Mailtrap settings as teh default values.
-	mtUser := os.Getenv("MAILTRAP_USER")
-	mtPw := os.Getenv("MAILTRAP_PW")
+	mtUser := getenvStr("MAILTRAP_USER")
+	mtPw := getenvStr("MAILTRAP_PW")
 	flag.StringVar(&cfg.smtp.host, "smtp-host", "smtp.mailtrap.io", "SMTP host")
 	flag.IntVar(&cfg.smtp.port, "smtp-port", 2525, "SMTP port")
 	flag.StringVar(&cfg.smtp.username, "smtp-username", mtUser, "SMTP username")
